@@ -1,7 +1,8 @@
 import java.math.BigDecimal;
 
 import br.com.alura.loja.imposto.CalculadoraDeImposto;
-import br.com.alura.loja.imposto.TipoImposto;
+import br.com.alura.loja.imposto.ICMS;
+import br.com.alura.loja.imposto.ISS;
 import br.com.alura.loja.orcamento.Orcamento;
 
 public class Main {
@@ -13,7 +14,8 @@ public class Main {
 		
 		CalculadoraDeImposto calculadora = new CalculadoraDeImposto();
 		
-		System.out.println(calculadora.calcular(orcamento, TipoImposto.ISS));
+		System.out.println(calculadora.calcular(orcamento, new ISS()));
+		System.out.println(calculadora.calcular(orcamento, new ICMS()));
 		
 
 	}
