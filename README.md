@@ -5,9 +5,11 @@
 
 # Padrões do curso que eu estudo:
 
-- Pattern Strategy
+- Pattern Strategy -- link: https://refactoring.guru/design-patterns/strategy
 
 O Pattern Strategy é um padrão comportamental que permite definir uma família de algoritmos, encapsulá-los e torná-los intercambiáveis. Isso permite que o cliente escolha o algoritmo a ser utilizado dinamicamente.
+
+Quando utilizar: quando eu tenho um parâmetro e sabe que aquela regra é baseada naquela parâmetro.
 
 ```java
 public class MeuImposto implements Imposto {
@@ -49,7 +51,74 @@ public static void main(String[] args) {
 
 
 ```
-- Chain of Responsibility
+- Chain of Responsibility: é um padrão de design comportamental que visa criar uma cadeia de objetos que possam tratar solicitações de forma sequencial. Nesse padrão, cada objeto na cadeia possui a capacidade de processar uma solicitação ou passá-la adiante para o próximo objeto na cadeia. 
+
+Aplicandp:
+
+	```java
+public abstract class Desconto {
+	
+	protected Desconto proximo;
+
+	public Desconto(Desconto proximo) {
+		this.proximo = proximo;
+	}
+	
+	public  abstract BigDecimal calcular(Orcamento orcamento);
+	
+}
+//----------------
+public class DescontoParaOrcamentoComValorMaiorQueQuinhentos extends Desconto {
+	public DescontoParaOrcamentoComValorMaiorQueQuinhentos(Desconto proximo) {
+		super(proximo);
+
+	}
+	public BigDecimal calcular(Orcamento orcamento) {
+
+		if(orcamento.getValor().compareTo(new BigDecimal("500")) > 0) {
+			return orcamento.getValor().multiply(new BigDecimal("0.05"));
+		}
+		return proximo.calcular(orcamento);
+	}
+
+}
+//----------------
+public class DescontoParaOrcamentoParaMaisDe05Itens extends Desconto{
+	public DescontoParaOrcamentoParaMaisDe05Itens(Desconto proximo) {
+		super(proximo);
+	}
+	public BigDecimal calcular(Orcamento orcamento) {
+		
+		if (orcamento.getQuantidadeItems() > 5) {
+			return orcamento.getValor().multiply(new BigDecimal("0.1"));
+		}
+		return proximo.calcular(orcamento);
+	}
+}
+//----------------
+public class SemDesconto extends Desconto {
+	public SemDesconto() {
+		super(null);
+	}
+	public BigDecimal calcular(Orcamento orcamento) {
+		return BigDecimal.ZERO;
+
+	}
+}
+//----------------
+public class CalculadoraDeDescontos {
+	
+	public BigDecimal calcular(Orcamento orcamento) {
+		Desconto desconto = new DescontoParaOrcamentoParaMaisDe05Itens(
+				new DescontoParaOrcamentoComValorMaiorQueQuinhentos(
+						new SemDesconto())
+				);
+		
+		return desconto.calcular(orcamento);
+		}		
+	}
+
+```
 
 - Template Method
 

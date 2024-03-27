@@ -10,7 +10,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		
-		Orcamento orcamento = new Orcamento(new BigDecimal("100"));
+		Orcamento orcamento = new Orcamento(new BigDecimal("200"), 6);
 		
 		CalculadoraDeImposto calculadora = new CalculadoraDeImposto();
 		
