@@ -120,7 +120,40 @@ public class CalculadoraDeDescontos {
 
 ```
 
-- Template Method
+- Template Method - A ideia deste padrão é que tenhamos um método que funcione como um template/modelo de modo que faz parte do processo e o restante é delegado, exemplo de aplicação:
+link: https://refactoring.guru/design-patterns/template-method.
+
+```java
+public abstract class Desconto {
+	
+	protected Desconto proximo;
+
+	public Desconto(Desconto proximo) {
+		this.proximo = proximo;
+	}
+	public BigDecimal calcular(Orcamento orcamento) {
+		if(deveAplicar(orcamento)) {
+			return efetuarCalculo(orcamento);
+		}
+		return proximo.calcular(orcamento);
+	};
+	protected abstract BigDecimal efetuarCalculo(Orcamento orcamento);
+	public abstract boolean deveAplicar(Orcamento orcamento);
+	
+}
+//---------------- As classes filhas ficam a implementação total, sendo um bom uso da herança:
+@Override
+	protected BigDecimal efetuarCalculo(Orcamento orcamento) {
+		return orcamento.getValor().multiply(new BigDecimal("0.05"));
+	}
+	@Override
+	public boolean deveAplicar(Orcamento orcamento) {
+		// TODO Auto-generated method stub
+		return orcamento.getValor().compareTo(new BigDecimal("500")) > 0;
+	}
+
+
+```
 
 - State
 
