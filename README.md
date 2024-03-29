@@ -155,8 +155,63 @@ public abstract class Desconto {
 
 ```
 
-- State
+- State - Utilizado quando temos uma transição de Estados ou quando precisamos aplicar alguam regra ou algoritmo baseado em algim estado da classe, também trabalha  com transição de estados.
+Aplicação, relativamente longa, no báisco, você manipula estados com uma classe própria, preferencialmente abstrada, para que assim suas classes filhas tenham acesso aos seus métodos, isso é bom, pq o que ela precisar fazer eu sobescrevo, o que não precisar ou se precisar do método, já está feito, utilizando muito da herança e talvez até do polimorfismo.
 
+link:  https://refactoring.guru/design-patterns/state.
+
+
+```java
+//criação da classe avstrada
+public abstract class SituacaoOrcamento {
+	
+	public BigDecimal CalcularDescontoExtra(Orcamento orcamento) {
+		return BigDecimal.ZERO;
+	}
+	public void aprovar(Orcamento orcamento) {
+		throw new DomainException("Orcamento não pode ser aprovado.");
+	}
+	public void reprovar(Orcamento orcamento) {
+		throw new DomainException("Orcamento não pode ser reprovado.");
+	}
+	public void finalizar(Orcamento orcamento) {
+		throw new DomainException("Orcamento não pode ser finalizado.");
+	}
+}
+//um exemplo de aplicação em classe filha:
+public class Analise extends SituacaoOrcamento{
+	public BigDecimal CalcularDescontoExtra(Orcamento orcamento) {
+		return orcamento.getValor().multiply(new BigDecimal("0.05"));	
+	}
+	public void aprovar(Orcamento orcamento) {
+		orcamento.setSituacaoOrcamento(new Aprovado());
+	}
+	public void reprovar(Orcamento orcamento) {
+		orcamento.setSituacaoOrcamento(new Reprovado());
+	}
+}
+
+//aplicação em atributo:
+private SituacaoOrcamento situacao;
+
+//Aplicação em metodos:
+
+public void aplicarDescontoExtraa() {
+		BigDecimal valorDoDescontoExtra = this.situacao.CalcularDescontoExtra(this);
+		this.valor = this.valor.subtract(valorDoDescontoExtra);
+	}
+	
+	public void aprovar() {
+		this.situacao.aprovar(this);
+	}
+	public void reprovar() {
+		this.situacao.reprovar(this);
+	}
+	
+	public void finalizar() {
+		this.situacao.finalizar(this);
+	}	
+```
 - Command
 
 - Observer
