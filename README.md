@@ -212,6 +212,69 @@ public void aplicarDescontoExtraa() {
 		this.situacao.finalizar(this);
 	}	
 ```
-- Command
+- Command - Padrão o qual você tem um comando que precisa ser execultado, o padrão command normal é quando você criar uma interface com um comando em comum, e existi o que usei, o command hendler, nele há separação em duasa classes, uma para representar os dados e informações e outra classe somente para execução. 
+link: https://refactoring.guru/design-patterns/command.
+APlicação: uma classe que gera um pedido e uma classe que que execulta.
+
+
+
+```java
+public class GerarPedido {
+	
+	private String cliente;
+	private BigDecimal valorOrcamento;
+	private int quantidadeItens;
+	
+	public GerarPedido(String cliente, BigDecimal valorOrcamento, int quantidadeItens) {		
+		this.cliente = cliente;
+		this.valorOrcamento = valorOrcamento;
+		this.quantidadeItens = quantidadeItens;
+	}
+	public String getCliente() {
+		return cliente;
+	}
+	public BigDecimal getValorOrcamento() {
+		return valorOrcamento;
+	}
+	public int getQuantidadeItens() {
+		return quantidadeItens;
+	}
+
+}
+//classe só para execultar
+public class GeraPedidoHandle {
+
+	// contrutor com injeção de dependências: repository, servicer o que for
+
+	public void execulte(GerarPedido gerar) {
+		Orcamento orcamento = new Orcamento(gerar.getValorOrcamento(), gerar.getQuantidadeItens());
+		String cliente = gerar.getCliente();
+		Pedido pedido = new Pedido(cliente, LocalDateTime.now(), orcamento);
+		System.out.print("Salvar um Pedido no Banco de Dados");
+		System.out.print("Enviar e-mail com dados do novo pedido;");
+	}
+}
+//teste
+
+public class TestesPedidos {
+	
+	public static void main(String[] args) {
+		String cliente = args[0];
+		BigDecimal valorOrcamento = new BigDecimal(args[1]);
+		int quantidade	= Integer.parseInt(args[2]);		
+		GerarPedido gerador = new GerarPedido(cliente, valorOrcamento, quantidade);
+		GeraPedidoHandle geradorHandler = new GeraPedidoHandle(/*teria uma dependencia*/);
+		geradorHandler.execulte(gerador);
+	}
+
+}
+
+
+
+```
+
+
+
+
 
 - Observer
