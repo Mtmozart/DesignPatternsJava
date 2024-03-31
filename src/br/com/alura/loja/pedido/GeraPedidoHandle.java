@@ -1,21 +1,28 @@
 package br.com.alura.loja.pedido;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import br.com.alura.loja.orcamento.Orcamento;
+import br.com.alura.loja.pedido.acao.AcaoAposGerarPedido;
+import br.com.alura.loja.pedido.acao.EnviarEmailPedido;
+import br.com.alura.loja.pedido.acao.SalvarPedidoNoBancoDeDados;
 
 public class GeraPedidoHandle {
+	
+	private List<AcaoAposGerarPedido> acoes;
 
-	// contrutor com injeção de dependências: repository, servicer o que for
+	
+
+	public GeraPedidoHandle(List<AcaoAposGerarPedido> acoes) {
+		this.acoes = acoes;
+	}
 
 	public void execulte(GerarPedido gerar) {
 		Orcamento orcamento = new Orcamento(gerar.getValorOrcamento(), gerar.getQuantidadeItens());
-
 		String cliente = gerar.getCliente();
-
 		Pedido pedido = new Pedido(cliente, LocalDateTime.now(), orcamento);
-
-		System.out.print("Salvar um Pedido no Banco de Dados");
-		System.out.print("Enviar e-mail com dados do novo pedido;");
+		
+		acoes.forEach(a -> a.execute(pedido));
 	}
 }

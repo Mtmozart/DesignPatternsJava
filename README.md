@@ -273,8 +273,27 @@ public class TestesPedidos {
 
 ```
 
+- Observer  - TEnho ouvintes, observadores, classes que observam determinadas ações, quando for chamada executa um módulo., os eventos são disparados automaticamente, exemplo de inversão de controller.
+link:  https://refactoring.guru/design-patterns/observer.	
+```Java
+
+//criação
+
+	private List<AcaoAposGerarPedido> acoes;
+
+	
+
+	public GeraPedidoHandle(List<AcaoAposGerarPedido> acoes) {
+		this.acoes = acoes;
+	}
+
+//um for each qye pecorrer uma lista de interfaces com métodos em comum.
+acoes.forEach(a -> a.execute(pedido));
 
 
 
 
-- Observer
+
+```
+
+
