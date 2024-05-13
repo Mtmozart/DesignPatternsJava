@@ -12,6 +12,7 @@ O Pattern Strategy é um padrão comportamental que permite definir uma família
 Quando utilizar: quando eu tenho um parâmetro e sabe que aquela regra é baseada naquela parâmetro.
 
 ```java
+
 public class MeuImposto implements Imposto {
 
     @Override
@@ -19,7 +20,7 @@ public class MeuImposto implements Imposto {
         // Implemente a lógica de cálculo do imposto aqui
     }
 }
-//----------------
+
 public class ISS implements Imposto{
 
  	@Override
@@ -27,7 +28,7 @@ public class ISS implements Imposto{
 		return orcamento.getValor().multiply(new BigDecimal("0.06"));
 	}
 }
-//----------------
+
 public class ICMS implements Imposto{
 
 	@Override
@@ -48,14 +49,12 @@ public static void main(String[] args) {
 		
 
 	}
-
-
 ```
 - Chain of Responsibility: é um padrão de design comportamental que visa criar uma cadeia de objetos que possam tratar solicitações de forma sequencial. Nesse padrão, cada objeto na cadeia possui a capacidade de processar uma solicitação ou passá-la adiante para o próximo objeto na cadeia. 
 
-Aplicandp:
+Aplicando:
 
-	```java
+```java
 public abstract class Desconto {
 	
 	protected Desconto proximo;
@@ -111,12 +110,14 @@ public class CalculadoraDeDescontos {
 	public BigDecimal calcular(Orcamento orcamento) {
 		Desconto desconto = new DescontoParaOrcamentoParaMaisDe05Itens(
 				new DescontoParaOrcamentoComValorMaiorQueQuinhentos(
-						new SemDesconto())
-				);
+						new SemDesconto()
+				)
+		);
 		
 		return desconto.calcular(orcamento);
-		}		
 	}
+}
+
 
 ```
 
